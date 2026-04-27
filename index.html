@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#17110e">
+  <title>Теневой Перекуп: Империя Сделок</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <section class="main-menu" id="mainMenu" aria-label="Главное меню">
+    <div class="menu-bg">
+      <span class="menu-light light-a"></span>
+      <span class="menu-light light-b"></span>
+      <span class="menu-light light-c"></span>
+    </div>
+    <div class="menu-panel">
+      <div class="menu-hero">
+        <img src="./assets/logo.svg" alt="" class="menu-logo">
+        <div>
+          <p class="menu-kicker">блюз · гараж · ночные сделки</p>
+          <h1>Dark Perekup</h1>
+          <strong>Империя сделок</strong>
+        </div>
+      </div>
+
+      <div class="menu-showcase" aria-hidden="true">
+        <div class="menu-item-card">
+          <img src="./assets/item-phone.svg" alt="">
+          <span>Телефон после ремонта</span>
+        </div>
+        <div class="menu-item-card">
+          <img src="./assets/box.svg" alt="">
+          <span>Склад странных товаров</span>
+        </div>
+        <div class="menu-item-card">
+          <img src="./assets/item-toolbox.svg" alt="">
+          <span>Рабочий гараж</span>
+        </div>
+      </div>
+
+      <div class="menu-actions">
+        <button type="button" class="menu-btn menu-btn-primary" id="playBtn">Играть</button>
+        <button type="button" class="menu-btn" data-menu-panel="settings">Настройки</button>
+        <button type="button" class="menu-btn" data-menu-panel="about">О игре</button>
+      </div>
+
+      <p class="menu-note">Покупай странные товары, чини их, находи блюзовые пластинки godlikelove, рискуй в сделках и развивай подпольную империю без реальных брендов.</p>
+    </div>
+
+    <div class="menu-dialog" id="menuDialog" hidden>
+      <div class="menu-dialog__panel">
+        <button type="button" class="menu-dialog__close" id="menuDialogCloseBtn">×</button>
+        <section class="menu-dialog__section" id="menuPanelSettings">
+          <h2>Настройки звука</h2>
+          <div class="settings-grid">
+            <button type="button" class="settings-toggle" id="menuSoundToggleBtn">Звуки: вкл</button>
+            <button type="button" class="settings-toggle" id="menuMusicToggleBtn">Музыка: выкл</button>
+          </div>
+          <label class="volume-control">
+            <span>Громкость</span>
+            <input type="range" id="menuVolumeSlider" min="0" max="100" step="1" value="45">
+            <strong id="menuVolumeValue">45%</strong>
+          </label>
+        </section>
+        <section class="menu-dialog__section" id="menuPanelAbout">
+          <h2>О игре</h2>
+          <p>«Dark Perekup: Империя Сделок» — idle/tycoon про гараж, ремонт, продажи, редкие находки, помощников и рост бизнеса.</p>
+          <p>made by OBANAIL</p>
+          <p><a href="https://band.link/9h57K" target="_blank" rel="noopener">слушать блюз из игры на всех площадках</a></p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <img src="./assets/logo.svg" alt="" class="brand__mark">
+        <div>
+          <h1>Теневой Перекуп</h1>
+          <p>Империя Сделок</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button type="button" class="save-pill top-menu-btn" id="openMenuBtn">Меню</button>
+        <div class="save-pill" id="saveState">Сохранено</div>
+      </div>
+    </header>
+
+    <nav class="mode-tabs" aria-label="Разделы игры">
+      <button type="button" class="mode-tab is-active" data-view="business">Бизнес</button>
+      <button type="button" class="mode-tab" data-view="duels">Дуэли</button>
+      <button type="button" class="mode-tab" data-view="races">Гонки</button>
+    </nav>
+
+    <main class="game-shell view-panel is-active" id="businessView">
+      <div class="left-column">
+        <section class="casino-section" aria-label="Мини-казино">
+          <div class="section-title">
+            <h2>Мини-казино</h2>
+            <span>только игровая валюта</span>
+          </div>
+
+          <div class="casino-grid">
+            <div class="casino-game roulette-game">
+              <div class="casino-game__head">
+                <h3>Рулетка</h3>
+                <span id="rouletteResult">Ставка ждёт</span>
+              </div>
+              <div class="roulette-wheel" id="rouletteWheel">
+                <span id="rouletteBall"></span>
+              </div>
+              <label class="bet-control">
+                <span>Ставка</span>
+                <input type="number" id="rouletteBetInput" min="10" step="10" value="50">
+              </label>
+              <div class="roulette-actions">
+                <button type="button" class="roulette-red" data-roulette="red">Красное x2</button>
+                <button type="button" class="roulette-black" data-roulette="black">Чёрное x2</button>
+                <button type="button" class="roulette-green" data-roulette="green">Зелёное x14</button>
+              </div>
+            </div>
+
+            <div class="casino-game crash-game">
+              <div class="casino-game__head">
+                <h3>Ракета</h3>
+                <span id="crashStatus">Готова к запуску</span>
+              </div>
+              <div class="rocket-window" id="rocketWindow">
+                <div class="rocket-trail"></div>
+                <div class="rocket" id="rocketIcon">▲</div>
+                <strong id="crashMultiplier">1.00x</strong>
+              </div>
+              <label class="bet-control">
+                <span>Ставка</span>
+                <input type="number" id="crashBetInput" min="10" step="10" value="50">
+              </label>
+              <div class="rocket-actions">
+                <button type="button" class="primary-btn" id="launchRocketBtn">Запустить</button>
+                <button type="button" class="ghost-btn" id="cashoutRocketBtn">Забрать</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="puzzle-section" aria-label="Головоломка сделки">
+          <div class="section-title">
+            <h2>Схема сейфа</h2>
+            <span id="puzzleStreak">серия 0</span>
+          </div>
+          <div class="puzzle-board-wrap">
+            <div class="puzzle-grid" id="puzzleGrid" aria-label="Панель контактов"></div>
+            <div class="puzzle-info">
+              <strong id="puzzleStatus">Купите схему и включите все контакты.</strong>
+              <span id="puzzleMoves">Ходов: 0</span>
+              <span id="puzzleReward">Награда растёт с серией.</span>
+            </div>
+          </div>
+          <div class="puzzle-actions">
+            <button type="button" class="primary-btn" id="newPuzzleBtn">Купить схему</button>
+            <button type="button" class="ghost-btn" id="puzzleHintBtn">Подсказка</button>
+          </div>
+        </section>
+
+        <section class="music-section collapsible-section is-collapsed" id="musicSection" aria-label="Блюзовые пластинки">
+          <div class="section-title section-title--action">
+            <div>
+              <h2>Магнитофон</h2>
+              <span id="recordCount">0 / 5 пластинок</span>
+            </div>
+            <button type="button" class="section-toggle" id="musicPanelBtn" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="collapsible-body">
+            <div class="tape-lounge">
+              <div class="tape-deck" id="tapeDeckDrop">
+                <div class="tape-reels">
+                  <span></span>
+                  <span></span>
+                </div>
+                <strong id="tapeDeckTitle">Пластинка не стоит</strong>
+                <p id="tapeDeckStatus">Перетащи пластинку в магнитофон.</p>
+                <div class="tape-controls">
+                  <button type="button" class="ghost-btn" id="stopRecordBtn">Стоп</button>
+                </div>
+                <audio id="bluesAudio" preload="none"></audio>
+              </div>
+              <div class="record-rack" id="recordRack"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="garage-area" aria-label="Главный экран игры">
+        <div class="stats-grid">
+          <div class="stat">
+            <span>Деньги</span>
+            <strong id="money">0 ₽</strong>
+          </div>
+          <div class="stat">
+            <span>Репутация</span>
+            <strong id="reputation">0</strong>
+          </div>
+          <div class="stat">
+            <span>Гараж</span>
+            <strong id="garageLevel">1 ур.</strong>
+          </div>
+          <div class="stat">
+            <span>Автодоход</span>
+            <strong id="passiveIncome">0 ₽/с</strong>
+          </div>
+        </div>
+
+        <section class="market-section" aria-label="Анализ рынка">
+          <div class="section-title">
+            <h2>Анализ рынка</h2>
+            <span id="marketTimer">свежая сводка</span>
+          </div>
+          <div class="market-card" id="marketCard">
+            <div>
+              <strong id="marketTrendTitle">Стабильный спрос</strong>
+              <p id="marketTrendText">Рынок спокоен: сделки идут без сюрпризов.</p>
+            </div>
+            <div class="market-values">
+              <span id="marketProfit">+0% цена</span>
+              <span id="marketRisk">+0% успех</span>
+            </div>
+          </div>
+          <div class="market-actions">
+            <button type="button" class="ghost-btn" id="analyzeMarketBtn">Изучить рынок</button>
+            <button type="button" class="ghost-btn" id="adMoneyBtn">Реклама за деньги</button>
+          </div>
+        </section>
+
+        <div class="garage-visual">
+          <img src="./assets/garage.svg" alt="Гараж перекупщика" class="garage-visual__bg">
+          <div class="garage-caption">
+            <span id="marketName">Гаражный круг</span>
+            <strong id="capacityText">0 / 2 мест</strong>
+          </div>
+          <div class="garage-crew" aria-hidden="true">
+            <div class="worker worker-tech"><span></span></div>
+            <div class="worker worker-buyer"><span></span></div>
+            <div class="worker worker-loader"><span></span></div>
+          </div>
+          <div class="garage-actions-layer" aria-label="Интерактивный ремонт">
+            <button type="button" class="garage-hotspot hotspot-wrench" data-garage-action="repair">Ключ</button>
+            <button type="button" class="garage-hotspot hotspot-spark" data-garage-action="spark">Искра</button>
+            <button type="button" class="garage-hotspot hotspot-deal" data-garage-action="deal">Торг</button>
+          </div>
+        </div>
+
+        <section class="current-deal" aria-label="Текущий товар">
+          <div class="current-item" id="currentItemCard">
+            <div class="item-stage" id="currentItemStage">
+              <img id="currentItemImage" src="./assets/box.svg" alt="" class="current-item__image">
+              <span class="repair-spark spark-a"></span>
+              <span class="repair-spark spark-b"></span>
+              <span class="repair-spark spark-c"></span>
+            </div>
+            <div class="current-item__body">
+              <div class="line-title">
+                <h2 id="currentItemName">Свободное место в гараже</h2>
+                <span id="currentItemRarity" class="rarity-chip rarity-common">Обычный</span>
+              </div>
+              <p id="currentItemInfo">Купите первый товар и запустите ремонт.</p>
+              <div class="progress-block">
+                <div class="progress-meta">
+                  <span id="progressLabel">Готов к закупке</span>
+                  <strong id="progressTime">0с</strong>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill" id="itemProgress"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="main-actions">
+            <button type="button" class="primary-btn" id="buyBtn">Купить товар</button>
+            <button type="button" class="ghost-btn" id="upgradeGarageBtn">Улучшить гараж</button>
+          </div>
+
+          <div class="risk-grid" aria-label="Выбор риска сделки">
+            <button type="button" class="risk-btn risk-safe" data-deal="safe">
+              <strong>Безопасная сделка</strong>
+              <span id="safeDealInfo">Маленькая прибыль</span>
+            </button>
+            <button type="button" class="risk-btn risk-risky" data-deal="risky">
+              <strong>Рискованная сделка</strong>
+              <span id="riskyDealInfo">Средняя прибыль</span>
+            </button>
+            <button type="button" class="risk-btn risk-legendary" data-deal="legendary">
+              <strong>Легендарная сделка</strong>
+              <span id="legendaryDealInfo">Большой куш</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="inventory-section" aria-label="Склад товаров">
+          <div class="section-title">
+            <h2>Склад</h2>
+            <span id="inventoryHint">Выберите товар для сделки</span>
+          </div>
+          <div class="inventory-list" id="inventoryList"></div>
+        </section>
+
+        <section class="bonus-section" aria-label="Рекламные бонусы">
+          <div class="section-title">
+            <h2>Бонусы</h2>
+            <span>Тестовые кнопки до подключения SDK</span>
+          </div>
+          <div class="bonus-grid">
+            <button type="button" id="doubleProfitBtn">Удвоить прибыль</button>
+            <button type="button" id="saveDealBtn">Спасти сделку</button>
+            <button type="button" id="speedUpBtn">Ускорить ремонт</button>
+            <button type="button" id="rareItemBtn">Редкий товар</button>
+            <button type="button" id="adCashBtn">Деньги за рекламу</button>
+          </div>
+        </section>
+      </section>
+
+      <aside class="side-column">
+        <section class="business-section collapsible-section is-collapsed" id="businessSection" aria-label="Бизнес и сотрудники">
+          <div class="section-title section-title--action">
+            <div>
+              <h2>Бизнес</h2>
+              <span id="businessRank">Гаражный старт</span>
+            </div>
+            <button type="button" class="section-toggle" id="businessPanelBtn" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="collapsible-body">
+            <div class="warehouse-list" id="warehouseList"></div>
+            <div class="crew-list" id="crewList"></div>
+          </div>
+        </section>
+
+        <section class="upgrade-section collapsible-section is-collapsed" id="upgradeSection" aria-label="Улучшения">
+          <div class="section-title section-title--action">
+            <div>
+              <h2>Улучшения</h2>
+              <span id="garageUpgradeHint">Следующий уровень гаража</span>
+            </div>
+            <button type="button" class="section-toggle" id="upgradePanelBtn" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="collapsible-body">
+            <div class="upgrade-list" id="upgradeList"></div>
+          </div>
+        </section>
+
+        <section class="megaproject-section collapsible-section is-collapsed" id="megaprojectSection" aria-label="Мегапроекты империи">
+          <div class="section-title section-title--action">
+            <div>
+              <h2>Мегапроекты</h2>
+              <span id="empireRank">для супер-магната</span>
+            </div>
+            <button type="button" class="section-toggle" id="megaprojectPanelBtn" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="collapsible-body">
+            <div class="megaproject-list" id="megaprojectList"></div>
+          </div>
+        </section>
+
+        <section class="collection-section collapsible-section is-collapsed" id="collectionSection" aria-label="Коллекция редких находок">
+          <div class="section-title section-title--action">
+            <div>
+              <h2>Коллекция</h2>
+              <span id="collectionCount">0 / 6</span>
+            </div>
+            <button type="button" class="section-toggle" id="collectionPanelBtn" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="collapsible-body">
+            <div class="collection-grid" id="collectionGrid"></div>
+          </div>
+        </section>
+
+        <section class="event-section collapsible-section is-collapsed" id="eventSection" aria-label="Случайные события">
+          <div class="section-title section-title--action">
+            <div>
+              <h2>События</h2>
+              <span id="eventSummary">Жизнь гаража</span>
+            </div>
+            <button type="button" class="section-toggle" id="eventPanelBtn" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="collapsible-body">
+            <ul class="event-log" id="eventLog"></ul>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <section class="duel-view view-panel" id="duelView" aria-label="Дуэли">
+      <div class="view-hero duel-hero">
+        <div>
+          <p>пистолеты · нервы · тактика</p>
+          <h2>Дуэли с боссами</h2>
+        </div>
+        <button type="button" class="primary-btn" id="startDuelBtn">Начать дуэль</button>
+      </div>
+
+      <div class="duel-layout">
+        <section class="duel-arena">
+          <div class="duel-fighters">
+            <div class="fighter-card">
+              <span>Ты</span>
+              <strong id="duelPlayerName">Перекуп</strong>
+              <div class="duel-bar"><div id="duelPlayerHp"></div></div>
+              <small id="duelPlayerFocus">Фокус 0 · укрытие 0</small>
+            </div>
+            <div class="duel-vs">VS</div>
+            <div class="fighter-card fighter-boss">
+              <span>Босс</span>
+              <strong id="duelBossName">Противник не выбран</strong>
+              <div class="duel-bar"><div id="duelBossHp"></div></div>
+              <small id="duelBossFocus">Фокус 0 · укрытие 0</small>
+            </div>
+          </div>
+          <div class="duel-table">
+            <div class="duel-pistol player-pistol" id="playerPistolView"></div>
+            <div class="duel-flash" id="duelFlash"></div>
+            <div class="duel-pistol boss-pistol"></div>
+          </div>
+          <p class="duel-status" id="duelStatus">Выбери дуэль и проверь нервы.</p>
+          <div class="duel-actions">
+            <button type="button" class="ghost-btn" data-duel-action="aim">Считать босса</button>
+            <button type="button" class="ghost-btn" data-duel-action="cover">Укрыться от выстрела</button>
+            <button type="button" class="primary-btn" data-duel-action="shoot">Выстрелить в окно</button>
+            <button type="button" class="risk-btn risk-legendary" data-duel-action="trick">Обойти укрытие</button>
+            <button type="button" class="ghost-btn" data-duel-action="reload">Перезарядить</button>
+          </div>
+        </section>
+
+        <section class="gun-shop-section">
+          <div class="section-title">
+            <h2>Пистолеты</h2>
+            <span id="gunSkinName">Стандарт</span>
+          </div>
+          <div class="skin-list" id="gunSkinList"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="race-view view-panel" id="raceView" aria-label="Гонки">
+      <div class="view-hero race-hero">
+        <div>
+          <p>бесконечная дорога · ставки · скины</p>
+          <h2>Ночной рейдер</h2>
+        </div>
+        <button type="button" class="primary-btn" id="startRaceBtn">Начать гонку</button>
+      </div>
+
+      <div class="race-layout">
+        <section class="race-panel">
+          <div class="race-hud">
+            <span id="raceDistance">0 м</span>
+            <strong id="raceBest">рекорд 0 м</strong>
+            <span id="raceReward">награда 0 ₽</span>
+          </div>
+          <canvas id="raceCanvas" width="360" height="560" aria-label="Гоночная трасса"></canvas>
+          <div class="race-controls">
+            <button type="button" class="ghost-btn" id="raceLeftBtn">Руль ←</button>
+            <button type="button" class="ghost-btn" id="raceRightBtn">Руль →</button>
+            <button type="button" class="primary-btn" id="raceGasBtn">Газ</button>
+            <button type="button" class="ghost-btn" id="raceBrakeBtn">Тормоз</button>
+          </div>
+        </section>
+
+        <section class="car-shop-section">
+          <div class="section-title">
+            <h2>Машины</h2>
+            <span id="carSkinName">Гаражная классика</span>
+          </div>
+          <div class="skin-list" id="carSkinList"></div>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <div class="float-layer" id="floatLayer" aria-hidden="true"></div>
+
+  <div class="modal" id="modal" hidden>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h2 id="modalTitle">Событие</h2>
+      <p id="modalText">Описание события</p>
+      <div class="modal__actions" id="modalActions"></div>
+    </div>
+  </div>
+
+  <script src="main.js" defer></script>
+</body>
+</html>
